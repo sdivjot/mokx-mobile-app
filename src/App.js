@@ -1,24 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import { UserAuthContextProvider } from "./context/UserAuthContext";
+import { Route, Routes } from "react-router-dom";
+import ProtectedRoute from "./components/ProtectedRoute"
+import Home from "./components/Home";
+import PhoneSignUp from "./components/PhoneSignUp";
+import LoadUp from "./components/LoadUp";
+import { useState,useEffect } from "react";
 
 function App() {
+  const [load,setLoad]=useState(true);
+  useEffect(() => {
+    setTimeout(() => {setLoad(false);}, 2000);
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    {!load && <UserAuthContextProvider>
+      <Routes>
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/" element={<PhoneSignUp />} />
+      </Routes>
+    </UserAuthContextProvider>}
+    {load && <LoadUp/>}
+    </>
   );
 }
 
