@@ -72,7 +72,7 @@ const Home = () => {
             <div onClick={goBack}><ArrowBackIcon></ArrowBackIcon></div>
             <div className="flex flex-row ml-4">
               <img src={yogagirl} className="rounded-full mr-2 w-[48px]" />
-              <div className="text-[#69235B] font-semibold text-lg">Arya <div className="text-sm font-light text-slate-400">Vedic AI Bot</div></div>
+              <div className="text-[#69235B] font-semibold text-lg md:text-2xl">Arya <div className="text-sm md:text-base font-light text-slate-400">Vedic AI Bot</div></div>
             </div>
           </div>
           <div className="langchange"><img src={Hindi} /></div>
@@ -83,12 +83,13 @@ const Home = () => {
         <div className='w-full flex flex-col'><Reply content={starttext} /></div>
         <div className="flex flex-col items-center justify-center text-[#69235B]">
           <div className="flex flex-row items-center justify-center"><ElectricBoltIcon /><span className="font-link text-xl">You can ask queries like:</span></div>
-          <div onClick={() => { setPost("What is the mantra in Rigveda 10.2.3?") }} className="text-sm font-medium w-9/12 font-link bg-yellow-500 p-3 rounded-3xl mb-1">What is the mantra in Rigveda 10.2.3?</div>
-          <div onClick={() => { setPost("What are the prescribed Vedic remedies for snake bites?") }} className="text-sm font-medium w-9/12 font-link bg-yellow-500 p-3 rounded-3xl mb-1">What are the prescribed Vedic remedies for snake bites?</div>
-          <div onClick={() => { setPost("Can you tell me the significance of the Gayatri Mantra?") }} className="text-sm font-medium w-9/12 font-link bg-yellow-500 p-3 rounded-3xl mb-1">Can you tell me the significance of the Gayatri Mantra?</div>
+          <div onClick={() => { setPost("What is the mantra in Rigveda 10.2.3?") }} className="text-sm font-medium w-9/12 font-link bg-[#FFC746] p-3 rounded-3xl mb-1 md:text-base">What is the mantra in Rigveda 10.2.3?</div>
+          <div onClick={() => { setPost("What are the prescribed Vedic remedies for snake bites?") }} className="text-sm font-medium w-9/12 font-link bg-[#FFC746] p-3 rounded-3xl mb-1 md:text-base">What are the prescribed Vedic remedies for snake bites?</div>
+          <div onClick={() => { setPost("Can you tell me the significance of the Gayatri Mantra?") }} className="text-sm font-medium w-9/12 font-link bg-[#FFC746] p-3 rounded-3xl mb-1 md:text-base">Can you tell me the significance of the Gayatri Mantra?</div>
           <div className="mt-1 font-semibold text-sm flex flex-row items-center justify-center"><WarningAmberIcon /> Limitation: May struggle with complex queries.</div>
-          <div className='w-full flex flex-col mt-2'><Reply content={'Let your curiosity guide you; wishing you blessings and enlightenment 🕉️'} /></div>
+          
         </div>
+        <div className='w-full flex flex-col mt-2'><Reply content={'Let your curiosity guide you; wishing you blessings and enlightenment 🕉️'} /></div>
         <div className='w-full flex flex-col'>
 
           {query.map((item, index) => {
