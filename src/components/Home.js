@@ -69,10 +69,10 @@ const Home = () => {
       <div className="bg-white w-full fixed top-0">
         <div className=' w-full flex flex-row items-center justify-between p-4'>
           <div className="flex flex-row items-center">
-            <div onClick={goBack}><ArrowBackIcon></ArrowBackIcon></div>
-            <div className="flex flex-row ml-4">
-              <img src={yogagirl} className="rounded-full mr-2 w-[48px]" />
-              <div className="text-[#69235B] font-semibold text-lg md:text-2xl">Arya <div className="text-sm md:text-base font-light text-slate-400">Vedic AI Bot</div></div>
+            <div onClick={goBack} className="mr-4"><ArrowBackIcon></ArrowBackIcon></div>
+            <div className="flex flex-row items-center">
+              <img src={yogagirl} className="h-full" />
+              <div className="text-[#69235B] font-semibold text-lg md:text-2xl ml-2">Arya <div className="text-sm md:text-base font-light text-slate-400">Vedic AI Bot</div></div>
             </div>
           </div>
           <div className="langchange"><img src={Hindi} /></div>
