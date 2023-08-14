@@ -62,7 +62,7 @@ const Home = () => {
         time: time
       });
       console.log(result.data.response);
-      setDisable(true);
+      setDisable(false);
     }
     else {
       console.log("failed to get result from API");
