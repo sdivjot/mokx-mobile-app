@@ -15,6 +15,7 @@ function App() {
     <>
     {!load && <UserAuthContextProvider>
       <Routes>
+        <Route path="/" element={<PhoneSignUp />} />
         <Route
           path="/home"
           element={
@@ -23,7 +24,6 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/" element={<PhoneSignUp />} />
       </Routes>
     </UserAuthContextProvider>}
     {load && <LoadUp/>}
