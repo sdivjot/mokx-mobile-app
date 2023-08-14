@@ -19,10 +19,14 @@ input[type=tel]:focus {
     border: 4px solid rgb(250, 204, 21);
 }
 
+.App {
+    white-space: pre-line;
+}
+
 body {
     background-color: rgb(238, 238, 252);
 }
 
-body>iframe {
+/* body>iframe {
     display: none;
-}
+} */
