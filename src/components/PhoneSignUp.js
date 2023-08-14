@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import PhoneInput from 'react-phone-number-input'
-import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 import OtpInput from 'react-otp-input';
 import { useUserAuth } from "../context/UserAuthContext";
 import namaste from "../images/yogagirl.png";
