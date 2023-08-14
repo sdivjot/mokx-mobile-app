@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiBaseURL = process.env.API_URL;
+const apiBaseURL = 'https://mokxweb.duckdns.org:5000';
 
 export const api = axios.create({
     baseURL: apiBaseURL,
