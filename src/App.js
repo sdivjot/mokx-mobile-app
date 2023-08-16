@@ -28,6 +28,7 @@ function App() {
     </UserAuthContextProvider>}
     {load && <LoadUp/>}
     </>
+    // <Home/>
   );
 }
 

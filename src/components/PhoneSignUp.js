@@ -33,7 +33,7 @@ const PhoneSignUp = () => {
       setFlag(true);
     } catch (err) {
       setError(err.message);
-      console.log(error);
+      console.log(err);
     }
   };
 
