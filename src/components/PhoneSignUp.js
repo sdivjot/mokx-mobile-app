@@ -23,7 +23,7 @@ const PhoneSignUp = () => {
     console.log(number);
     setError("");
     if (number === "" || number === undefined)
-      alert("Please enter a valid phone number!");
+      return setError("Please enter a valid phone number!");
     try {
       console.log("i am here", number)
       const response = await setUpRecaptcha(number);
@@ -101,9 +101,9 @@ const PhoneSignUp = () => {
         <div className="text-white pt-4">I did not recieve any code. <span onClick={getOtp} className="text-yellow-400 cursor-pointer">RESEND</span></div>
         </div>
           <Timer initMinute={2} initSeconds={0}/>
-          {cap && <div className=" mb-5" id='recaptcha-container'></div>}
           <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Submit</button>
-        </form>} 
+        </form>}
+        {cap && <div className=" mb-5" id='recaptcha-container'></div>}
       </div>
     </>
   );
