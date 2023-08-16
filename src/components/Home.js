@@ -42,7 +42,6 @@ const Home = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(e);
     const current = new Date();
     const time = current.toLocaleTimeString("en-US", {
       hour: "2-digit",
