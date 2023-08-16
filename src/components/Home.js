@@ -198,7 +198,7 @@ const Home = () => {
               <div className="w-full"><input disabled={disable ? "disabled" : ""} className="w-full border-b-2 focus:outline-none" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
             </label>
             <button onClick={handleSubmit} disabled={!post} type="submit" style={{ margin: "0.75rem" }} ><img src={sendbtn} /></button>
-            {!rec ? <button onClick={recorder} className=""><MicRounded /></button> : <button onClick={handleAudio} className=""><HearingRoundedIcon /></button>}
+            {!rec ? <button onClick={recorder} disabled={disable} className=""><MicRounded /></button> : <button onClick={handleAudio} className=""><HearingRoundedIcon /></button>}
           </form>
         </div>
       </div>
