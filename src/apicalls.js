@@ -18,3 +18,7 @@ export const apicall = {
     },
 
 }
+
+export const audio = {
+
+}
