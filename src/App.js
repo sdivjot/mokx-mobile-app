@@ -1,8 +1,5 @@
-import { UserAuthContextProvider } from "./context/UserAuthContext";
-import { Route, Routes } from "react-router-dom";
-import ProtectedRoute from "./components/ProtectedRoute"
+
 import Home from "./components/Home";
-import PhoneSignUp from "./components/PhoneSignUp";
 import LoadUp from "./components/LoadUp";
 import { useState,useEffect } from "react";
 
