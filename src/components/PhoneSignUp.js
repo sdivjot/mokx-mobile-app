@@ -55,12 +55,12 @@ const PhoneSignUp = () => {
       <div className='flex flex-col items-center justify-between bg-[#69235B] h-screen'>
 
 
-        <div className='w-full md:w-[40vw] mx-auto flex flex-col items-center'>
+        <div className='w-full flex flex-col items-center'>
           <img className='w-full' src={namaste} alt="namaste" />
           <div className='w-full flex flex-row justify-center items-center'>
             <div className='text-center text-xl bg-[#CBCBFF] w-48 h-8 rounded-md text-[#69235B] font-semibold'>Arya, AI Acharya</div>
           </div>
-          {!flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 ">Start Your Vedic Quest</div>}
+          {!flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12">Start Your Vedic Quest</div>}
           {flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12">OTP Verification</div>}
         </div>
 
