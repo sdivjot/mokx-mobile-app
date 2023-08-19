@@ -5,8 +5,7 @@ import Home from "./components/Home";
 import PhoneSignUp from "./components/PhoneSignUp";
 import LoadUp from "./components/LoadUp";
 import { useState, useEffect } from "react";
-import { DialogProvider, useDialog } from "react-mui-dialog";
-import { Select, MenuItem, Button } from "@mui/material";
+import { Select, MenuItem } from "@mui/material";
 import namaste from "./images/yogagirl.png"
 
 function App() {
