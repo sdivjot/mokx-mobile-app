@@ -13,15 +13,15 @@ import HelpIcon from '@mui/icons-material/Help';
 import { MicRounded } from "@mui/icons-material";
 import HearingRoundedIcon from '@mui/icons-material/HearingRounded';
 import axios from "axios";
+import prompts from "./sampleprompts";
 
-
-const Home = () => {
+const Home = (props) => {
   const [rec, setRec] = useState(false);
-  const [lang, setLang] = useState(true);
+  const [lang, setLang] = useState(props.lang);
   const [placeholder, setHolder] = useState("Ask Vedas")
   const bottomRef = useRef(null);
-  const starttext = "🙏 Namaste! I'm Arya, your AI Vedic help. I'm here to provide insights from Vedas for daily life concerns.Whether you seek guidance on mantras, general life advice, or specific Vedic interpretations, I'm here to assist you."
-  const hindistart = "🙏 नमस्ते! मैं आर्य हूं, आपकी एआई वैदिक सहायता। मैं यहां दैनिक जीवन की चिंताओं के लिए वेदों से अंतर्दृष्टि प्रदान करने के लिए हूं। चाहे आप मंत्रों, सामान्य जीवन सलाह, या विशिष्ट वैदिक व्याख्याओं पर मार्गदर्शन चाहते हों, मैं आपकी सहायता के लिए यहां हूं।"
+  const starttext = "🙏 Namaste!  I'm Arya, your AI Vedic Acharya.  I'll help you with insights from Vedas for daily life concerns. Get guidance on mantras, general life advice, or specific Vedic interpretations. You can text or ask queries in your voice. 📝🎤"
+  const hindistart = "🙏 नमस्ते! मैं आर्या हूँ, आपका वेदी एआई आचार्य। मैं आपको वेदों के गहरे ज्ञान से जीवन के प्रश्नों के उत्तर देने में मदद करूँगा। मंत्रों के गहरे अर्थ, जीवन के लिए सलाह या वैदिक व्याख्याओं के लिए मार्गदर्शन प्राप्त करें। आप टेक्स्ट या आपकी आवाज़ में प्रश्न पूछ सकते हैं। 📝🎤"
   const [query, setQuery] = useState([]);
   const [disable, setDisable] = useState(false);
 
@@ -156,13 +156,13 @@ const Home = () => {
       <div className="bg-white w-full fixed top-0">
         <div className=' w-full flex flex-row items-center justify-between p-4'>
           <div className="flex flex-row items-center">
-            <div onClick={goBack} className="mr-4"><ArrowBackIcon></ArrowBackIcon></div>
+            {/* <div onClick={goBack} className="mr-4"><ArrowBackIcon></ArrowBackIcon></div> */}
             <div className="flex flex-row items-center">
               <img src={yogagirl} className="h-full" />
-              <div className="text-[#69235B] font-semibold text-lg md:text-2xl ml-2">{lang ? "Arya" : "आर्या"}<div className="text-sm md:text-base font-light text-slate-400">{lang ? "Vedic AI Bot" : "वैदिक ए.आई. बॉट"}</div></div>
+              <div className="text-[#69235B] font-semibold text-lg md:text-2xl ml-2">{lang==="English" ? "Arya" : "आर्या"}<div className="text-sm md:text-base font-light text-slate-400">{lang==="English" ? "Vedic AI Bot" : "वैदिक ए.आई. बॉट"}</div></div>
             </div>
           </div>
-          <div onClick={() => { setLang(!lang) }} className="langchange cursor-pointer"><img src={Hindi} /></div>
+          <div onClick={() => { if(lang==="English"){setLang("हिंदी")} else{setLang("English")}}} className="langchange cursor-pointer"><img src={Hindi} /></div>
         </div>
       </div>
       <div className='mt-[80px] flex flex-col items-center w-full font-link bg-[#EEEEFF] min-h-screen'>
@@ -171,9 +171,9 @@ const Home = () => {
             <div><img className='rounded-full' src={yogagirl} alt="xyz" /></div>
             <div className='flex flex-col items-start w-full pl-[10px]'>
               <div className="bg-[#69235B] rounded-tr-2xl rounded-bl-2xl rounded-br-2xl text-sm md:text-lg text-[#FFFFFF] p-[10px]">
-                {lang ? starttext : hindistart}
+                {lang==="English" ? starttext : hindistart}
                 <div className="flex flex-col justify-center text-black">
-                  <div className="flex flex-row items-center justify-start my-2 text-white"><ElectricBoltIcon /><span className="font-link">You can ask queries like:</span></div>
+                  <div className="flex flex-row items-center justify-start my-2 text-white"><ElectricBoltIcon /><span className="font-link">{lang==="English" ? "You can ask queries like:" : "आप प्रश्न पूछ सकते हैं जैसे:"}</span></div>
                   <div onClick={() => { setPost("What is the mantra in Rigveda 10.2.3?") }} className="text-sm font-medium font-link bg-[#FFC746] p-1 rounded-xl mb-1 md:text-base cursor-pointer"><HelpIcon style={{ fontSize: '1rem' }} />What is the mantra in Rigveda 10.2.3?</div>
                   <div onClick={() => { setPost("What are the prescribed Vedic remedies for snake bites?") }} className="text-sm font-medium font-link bg-[#FFC746] p-1 rounded-xl mb-1 md:text-base cursor-pointer"><HelpIcon style={{ fontSize: '1rem' }} />What are the prescribed Vedic remedies for snake bites?</div>
                   <div onClick={() => { setPost("Can you tell me the significance of the Gayatri Mantra?") }} className="text-sm font-medium font-link bg-[#FFC746] p-1 rounded-xl mb-1 md:text-base cursor-pointer"><HelpIcon style={{ fontSize: '1rem' }} />Can you tell me the significance of the Gayatri Mantra?</div>
@@ -184,7 +184,7 @@ const Home = () => {
 
         </div>
 
-        <div className='w-full flex flex-col'><Reply content={lang ? 'Let your curiosity guide you; wishing you blessings and enlightenment 🕉️' : 'अपनी जिज्ञासा को आपका मार्गदर्शन करें; आपके आशीर्वाद और ज्ञान की कामना करते हैं 🕉️'} /></div>
+        <div className='w-full flex flex-col'><Reply content={lang==="English" ? 'Let your curiosity guide you; wishing you blessings and enlightenment 🕉️' : 'आपकी जिज्ञासा को आगे बढ़ने दें; आपको आशीर्वाद और ज्ञान की कामना करते हैं 🕉️'} /></div>
         <div className='w-full flex flex-col'>
 
           {query.map((item, index) => {
