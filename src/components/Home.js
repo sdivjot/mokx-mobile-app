@@ -255,7 +255,7 @@ const Home = () => {
           <div className='z-10 rounded-3xl bg-[#FFFFFF] drop-shadow-xl flex flex-row justify-between items-center w-11/12 p-[5px] px-[15px] md:p-[10px] md:px-[20px] m-3 fixed bottom-4'>
             <form className="w-full flex flex-row justify-between items-center">
               <label className="w-full">
-                <div className="w-full"><input disabled={disable ? "disabled" : ""} className="w-full border-b-2 focus:outline-none text-sm md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
+                <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-sm md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
               </label>
               {!disable && <button onClick={handleSubmit} disabled={!post} type="submit" style={{ margin: "0.25rem" }} ><img src={sendbtn} /></button>}
               {disable && <img className="w-[25px] animate-spin m-1" src={loader} />}
