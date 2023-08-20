@@ -12,9 +12,11 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import HelpIcon from '@mui/icons-material/Help';
 import { MicRounded } from "@mui/icons-material";
 import HearingRoundedIcon from '@mui/icons-material/HearingRounded';
+import LoopRoundedIcon from '@mui/icons-material/LoopRounded';
 import axios from "axios";
 import prompts from "./sampleprompts";
 import { AudioRecorder, useAudioRecorder } from "react-audio-voice-recorder";
+import loader from '../images/loader.svg'
 
 
 const Home = () => {
@@ -255,7 +257,8 @@ const Home = () => {
               <label className="w-full">
                 <div className="w-full"><input disabled={disable ? "disabled" : ""} className="w-full border-b-2 focus:outline-none text-sm md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
               </label>
-              <button onClick={handleSubmit} disabled={!post} type="submit" style={{ margin: "0.25rem" }} ><img src={sendbtn} /></button>
+              {!disable && <button onClick={handleSubmit} disabled={!post} type="submit" style={{ margin: "0.25rem" }} ><img src={sendbtn} /></button>}
+              {disable && <img className="w-[25px] animate-spin m-1" src={loader} />}
               {!rec ? <button onClick={recorder} disabled={disable} className=""><MicRounded /></button> : <button onClick={handleAudio} className=""><HearingRoundedIcon /></button>}
             </form>
           </div></>}
