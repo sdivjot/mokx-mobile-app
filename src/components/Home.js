@@ -196,7 +196,7 @@ const Home = () => {
           <Typed
                     strings={lang === "English" ? Roles : hRoles}
                     typeSpeed={60}
-                    backSpeed={60}
+                    backSpeed={20}
                     backDelay={2000}
                     showCursor
                     className="self-typed"
