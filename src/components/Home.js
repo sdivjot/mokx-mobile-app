@@ -194,12 +194,10 @@ const Home = () => {
           </div>
           {dis && <div className="drop-shadow-lg z-10 fixed md:bottom-[90px] rounded-2xl bottom-[75px] w-[90%] flex flex-row bg-white items-center"><div className="ml-4 text-[10px] md:text-[14px]">
           <Typed
-                    // loop
                     strings={lang === "English" ? Roles : hRoles}
                     typeSpeed={60}
                     backSpeed={60}
                     backDelay={2000}
-                    // loopCount={0}
                     showCursor
                     className="self-typed"
                     cursorChar="|"
