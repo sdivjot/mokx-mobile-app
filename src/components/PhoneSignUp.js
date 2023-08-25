@@ -73,7 +73,7 @@ const PhoneSignUp = () => {
           onChange={setNumber} 
           defaultCountry="IN" 
           /></label>
-          <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Send OTP</button>
+          <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 py-2.5 dark:focus:ring-yellow-900">Send OTP</button>
         </form>}
 
         {flag && <form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center" onSubmit={verifyOtp}>
@@ -101,7 +101,7 @@ const PhoneSignUp = () => {
         <div className="text-white pt-4">I did not recieve any code. <span onClick={getOtp} className="text-yellow-400 cursor-pointer">RESEND</span></div>
         </div>
           <Timer initMinute={2} initSeconds={0}/>
-          <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Submit</button>
+          <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 py-2.5 dark:focus:ring-yellow-900">Submit</button>
         </form>}
         {cap && <div className=" mb-5" id='recaptcha-container'></div>}
       </div>
