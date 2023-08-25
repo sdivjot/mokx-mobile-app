@@ -15,7 +15,19 @@ function App() {
   }, []);
   return (
     <>
-      {!load && <Home />}
+      {!load && <UserAuthContextProvider>
+      <Routes>
+        <Route path="/" element={<PhoneSignUp />} />
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </UserAuthContextProvider>}
       {load && <LoadUp />}
     </>
   );
