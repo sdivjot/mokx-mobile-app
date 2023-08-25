@@ -34,6 +34,7 @@ const Home = () => {
       return [...prevNotes, newNote];
     });
   };
+  
 
   // const navigate = useNavigate();
   function goBack() {
@@ -195,8 +196,8 @@ const Home = () => {
           <Typed
                     // loop
                     strings={lang === "English" ? Roles : hRoles}
-                    typeSpeed={100}
-                    backSpeed={100}
+                    typeSpeed={60}
+                    backSpeed={60}
                     backDelay={2000}
                     // loopCount={0}
                     showCursor

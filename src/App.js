@@ -13,6 +13,7 @@ function App() {
   useEffect(() => {
     setTimeout(() => { setLoad(false); }, 2000);
   }, []);
+  
   return (
     <>
       {!load && <UserAuthContextProvider>
