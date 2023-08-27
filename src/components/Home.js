@@ -9,9 +9,9 @@ import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import HelpIcon from '@mui/icons-material/Help';
 import axios from "axios";
 import x from "./sampleprompts";
-import loader from '../images/loader.svg';
+import loaderround from '../images/loader.svg';
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
-import typing from '../images/loader.gif'
+import loader from '../images/loader.gif'
 import Typed from 'react-typed';
 
 
@@ -155,7 +155,7 @@ const Home = () => {
 
         {sel && <>
           <div className="w-full flex flex-col">
-            <div className="flex flex-row justify-start w-10/12 pl-[10px] mb-4 mt-4">
+            <div className="flex flex-row justify-start w-10/12 pl-[10px] mb-2 mt-4">
               <div><img className='rounded-full' src={yogagirl} alt="xyz" /></div>
               <div className='flex flex-col items-start w-full pl-[10px]'>
                 <div className="bg-[#69235B] rounded-tr-2xl rounded-bl-2xl rounded-br-2xl text-sm md:text-lg text-[#FFFFFF] p-[10px]">
@@ -169,10 +169,16 @@ const Home = () => {
                 </div>
               </div>
             </div>
-
           </div>
 
-          <div className='w-full flex flex-col'><Reply content={lang === "English" ? 'Let your curiosity guide you; wishing you blessings and enlightenment 🕉️' : 'आपकी जिज्ञासा को आगे बढ़ने दें; आपको आशीर्वाद और ज्ञान की कामना करते हैं 🕉️'} /></div>
+          <div className='w-full flex flex-col'><div className="flex flex-row justify-start w-10/12 pl-[10px] mb-4 ">
+              <div><img className='rounded-full' src={yogagirl} alt="xyz" /></div>
+              <div className='flex flex-col items-start w-full pl-[10px]'>
+                <div className="bg-[#69235B] rounded-tr-2xl rounded-bl-2xl rounded-br-2xl text-sm md:text-lg text-[#FFFFFF] p-[10px]">
+                  {lang === "English" ? 'Let your curiosity guide you, wishing you blessings and enlightenment 🕉️' : 'आपकी जिज्ञासा को आगे बढ़ने दें, आपको आशीर्वाद और ज्ञान की कामना करते हैं 🕉️'}
+                </div>
+              </div>
+            </div></div>
           <div className='w-full flex flex-col'>
 
             {query.map((item, index) => {
@@ -181,18 +187,20 @@ const Home = () => {
                 id={index}
                 content={item.query}
                 time={item.time}
+                lang={lang}
               />
                 <Reply
                   key={index}
                   id={index}
                   content={item.reply}
                   time={item.time}
+                  lang={lang}
                 />
               </div>
             })}
             <div ref={bottomRef} className="h-24" />
           </div>
-          {dis && <div className="drop-shadow-lg z-10 fixed md:bottom-[90px] rounded-2xl bottom-[75px] w-[90%] flex flex-row bg-white items-center"><div className="ml-4 text-[10px] md:text-[14px]">
+          {/* {dis && <div className="drop-shadow-lg z-10 fixed md:bottom-[90px] rounded-2xl bottom-[75px] flex flex-row bg-white items-center justify-center"><div className="mx-4 my-1 text-xs md:text-sm">
           <Typed
                     strings={lang === "English" ? Roles : hRoles}
                     typeSpeed={60}
@@ -202,16 +210,17 @@ const Home = () => {
                     className="self-typed"
                     cursorChar="|"
                 />
-          </div> <img className=" h-6 md:h-8" src={typing}/></div>}
-          <div className='z-10 rounded-3xl bg-[#FFFFFF] drop-shadow-xl flex flex-row justify-between items-center w-11/12 p-[5px] px-[15px] md:p-[10px] md:px-[20px] m-3 fixed bottom-4'>
+          </div></div>} */}
+          <div className='z-10 rounded-3xl bg-[#FFFFFF] drop-shadow-xl flex flex-row justify-between items-center w-11/12 p-[5px] px-[15px] md:p-[10px] md:px-[20px] m-3 fixed bottom-3'>
             <form onSubmit={handleEnter} className="w-full flex flex-row justify-between items-center">
               <label className="w-full m-1">
-                <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-sm md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
+                <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-md md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
               </label>
               {!dis && <>{post ? <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} ><SendRoundedIcon /></button> : <button disabled type="submit" style={{ margin: "0.25rem" }} ><SendRoundedIcon /></button>}</>}
-              {dis && <img className="w-6 animate-spin" src={loader}/>}
+              {dis && <img className="w-6" src={loader}/>}
             </form>
           </div>
+          <div className="z-10 fixed h-6 w-full bottom-0 backdrop-blur-sm"></div>
         </>}
       </div>
     </div>
