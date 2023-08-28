@@ -31,7 +31,7 @@ function Reply(props) {
             className="self-typed"
             cursorChar="|"
         />)}</div>
-            <div className="text-slate-400 p-[5px] text-xs">{props.time}</div>
+            {props.time && <div className="text-slate-400 p-[5px] text-xs">{props.time}</div>}
         </div>
     </div>
 }
