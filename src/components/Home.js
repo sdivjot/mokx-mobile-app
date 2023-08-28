@@ -100,6 +100,7 @@ const Home = () => {
   const getChats = async () => {
     setPrev(true);
     const chaturl = process.env.REACT_APP_BACKEND + "/getchats/" + user.phoneNumber;
+    console.log(chaturl);
     await axios.get(chaturl).then((res) => { setChats(res.data); setPrev(true);})
   }
 
