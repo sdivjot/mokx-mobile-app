@@ -12,6 +12,7 @@ import loader from '../images/loader.gif'
 import { useUserAuth } from '../context/UserAuthContext'
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 import MicRoundedIcon from '@mui/icons-material/MicRounded';
+import roundloader from '../images/loader.svg';
 
 
 const Home = () => {
@@ -30,6 +31,7 @@ const Home = () => {
   const [query, setQuery] = useState([]);
   const [chats, setChats] = useState([]);
   const [audioblob, setAudio] = useState({});
+  const [got, setGot] = useState(false);
 
 
   function addQuery(newNote) {
@@ -99,7 +101,7 @@ const Home = () => {
   const getChats = async () => {
     setPrev(true);
     const chaturl = process.env.REACT_APP_BACKEND + "/getchats/" + user.phoneNumber;
-    await axios.get(chaturl).then((res) => { setChats(res.data); setPrev(true); })
+    await axios.get(chaturl).then((res) => { setChats(res.data); setPrev(true);setGot(true);})
   }
 
 
@@ -253,7 +255,12 @@ const Home = () => {
             </div>
           </div>
 
-          {prev && <> <div className="font-link font-semibold text-gray-400 text-sm">------- Previous chats -------</div>
+          {prev && <> <div className="font-link font-semibold text-gray-400 text-sm">
+            ------- Previous chats -------
+            
+            {!got && <div className="w-full flex flex-row justify-center mb-2 animate-spin"><img src={roundloader} className="h-8"/></div>}
+            </div>
+            
             <div className='w-full flex flex-col'>
 
               {chats.map((item, index) => { //displaying previous chats
