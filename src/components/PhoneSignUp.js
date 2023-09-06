@@ -60,13 +60,13 @@ const PhoneSignUp = () => {
           <div className='w-full flex flex-row justify-center items-center'>
             <div className='text-center text-xl bg-[#CBCBFF] w-48 h-8 rounded-md text-[#69235B] font-semibold'>Arya, AI Acharya</div>
           </div>
-          {!flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 ">Start Your Vedic Quest</div>}
-          {flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12">OTP Verification</div>}
+          {!flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 md:text-center ">Start Your Vedic Quest</div>}
+          {flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 md:text-center">OTP Verification</div>}
         </div>
 
         
 
-        {!flag && < form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center" onSubmit={getOtp}>
+        {!flag && < form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center md:w-[25vw]" onSubmit={getOtp}>
           <label className="w-9/12"><div className="text-white ">Enter mobile no.*</div><PhoneInput 
           placeholder="12345 67890" 
           value={number} 
@@ -76,7 +76,7 @@ const PhoneSignUp = () => {
           <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 py-2.5 dark:focus:ring-yellow-900">Send OTP</button>
         </form>}
 
-        {flag && <form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center" onSubmit={verifyOtp}>
+        {flag && <form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center md:items-center md:w-[25vw] " onSubmit={verifyOtp}>
         <div className="w-9/12">
         <div className="text-white pb-4">Enter the code sent to <span className="text-yellow-400">{number}</span>.*</div>
         <OtpInput  
