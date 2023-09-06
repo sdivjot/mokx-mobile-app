@@ -68,7 +68,7 @@ const PhoneSignUp = () => {
 
         {!flag && < form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center" onSubmit={getOtp}>
           <label className="w-9/12"><div className="text-white ">Enter mobile no.*</div><PhoneInput 
-          placeholder="Enter phone number" 
+          placeholder="12345 67890" 
           value={number} 
           onChange={setNumber} 
           defaultCountry="IN" 
