@@ -12,7 +12,6 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 import HelpIcon from '@mui/icons-material/Help';
 import { MicRounded } from "@mui/icons-material";
 import HearingRoundedIcon from '@mui/icons-material/HearingRounded';
-import axios from "axios";
 
 
 const Home = () => {
@@ -56,13 +55,7 @@ const Home = () => {
       reply: '',
       time: time
     })
-    const backendurl=process.env.REACT_APP_BACKEND;
-    // const t=current.toLocaleString();
-    //   axios.post(backendurl, {
-    //     query: q,
-    //     reply: 'result.data.response',
-    //     time: t
-    //   });
+
     const result = await apicall.result({ 'text': q })
     if (result) {
       setQuery(query.filter(item => item.reply !== ''));
@@ -71,12 +64,6 @@ const Home = () => {
         reply: result.data.response,
         time: time
       });
-      const t=current.toLocaleString();
-      axios.post(backendurl, {
-        query: q,
-        reply: result.data.response,
-        time: t
-      }).then(() => { console.log('saved query to database') });
       console.log(result.data.response);
       setDisable(false);
     }
