@@ -27,6 +27,6 @@ body {
     background-color: #69235B;
 }
 
-/* body>iframe {
+body>iframe {
     display: none;
-} */
+}

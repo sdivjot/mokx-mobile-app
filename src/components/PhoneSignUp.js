@@ -60,8 +60,8 @@ const PhoneSignUp = () => {
           <div className='w-full flex flex-row justify-center items-center'>
             <div className='text-center text-xl bg-[#CBCBFF] w-48 h-8 rounded-md text-[#69235B] font-semibold'>Arya, AI Acharya</div>
           </div>
-          {!flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 ">Start Your Vedic Quest</div>}
-          {flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12">OTP Verification</div>}
+          {!flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 md:text-center">Start Your Vedic Quest</div>}
+          {flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 md:text-center">OTP Verification</div>}
         </div>
 
         
@@ -77,7 +77,7 @@ const PhoneSignUp = () => {
         </form>}
 
         {flag && <form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center" onSubmit={verifyOtp}>
-        <div className="w-9/12">
+        <div className="w-9/12 md:flex md:flex-col md:items-center">
         <div className="text-white pb-4">Enter the code sent to <span className="text-yellow-400">{number}</span>.*</div>
         <OtpInput  
           value={otp} 
