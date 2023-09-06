@@ -101,7 +101,7 @@ const Home = () => {
   const getChats = async () => {
     setPrev(true);
     const chaturl = process.env.REACT_APP_BACKEND + "/getchats/" + user.phoneNumber;
-    await axios.get(chaturl).then((res) => { setChats(res.data); setPrev(true);setGot(true);})
+    await axios.get(chaturl).then((res) => { setChats(res.data); setPrev(true); setGot(true); })
   }
 
 
@@ -160,7 +160,7 @@ const Home = () => {
     const formData = new FormData();
     formData.append('audio', audioBlob, 'audioFileName.wav');
 
-    axios.post('https://mokxweb.duckdns.org:5000/upload_audio',formData)
+    axios.post('https://mokxweb.duckdns.org:5000/upload_audio', formData)
       .then(response => {
         console.log('Upload successful:', response.data);
       })
@@ -214,7 +214,7 @@ const Home = () => {
               Welcome!!<br></br>SELECT YOUR LANGUAGE / <br />अपनी भाषा का चयन करें
               <div className="flex flex-col justify-center text-black mt-1">
                 <div onClick={() => { setLang("English"); setSel(true); }} className="text-sm font-medium font-link bg-[#FFC746] p-1 rounded-xl mb-1 md:text-base cursor-pointer text-center">English</div>
-                <div onClick={() => { setLang("हिंदी"); setSel(true); setHolder("वेद से पूछो") }} className="text-sm font-medium font-link bg-[#FFC746] p-1 rounded-xl mb-1 md:text-base cursor-pointer text-center">हिंदी</div>
+                <div onClick={() => { setLang("हिंदी"); setSel(true); setHolder("वेद से पूछें") }} className="text-sm font-medium font-link bg-[#FFC746] p-1 rounded-xl mb-1 md:text-base cursor-pointer text-center">हिंदी</div>
               </div>
             </div>
           </div>
@@ -257,10 +257,10 @@ const Home = () => {
 
           {prev && <> <div className="font-link font-semibold text-gray-400 text-sm">
             ------- Previous chats -------
-            
-            {!got && <div className="w-full flex flex-row justify-center mb-2 animate-spin"><img src={roundloader} className="h-8"/></div>}
-            </div>
-            
+
+            {!got && <div className="w-full flex flex-row justify-center mb-2 animate-spin"><img src={roundloader} className="h-8" /></div>}
+          </div>
+
             <div className='w-full flex flex-col'>
 
               {chats.map((item, index) => { //displaying previous chats
@@ -334,7 +334,7 @@ const Home = () => {
               <label className="w-full m-1">
                 <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-md md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
               </label>
-              {!dis && <>{post ? <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} ><SendRoundedIcon /></button> : <MicRoundedIcon/>}</>}
+              {!dis && <>{post ? <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} ><SendRoundedIcon /></button> : <MicRoundedIcon />}</>}
               {dis && <img className="w-6" src={loader} />}
             </form>
           </div>
