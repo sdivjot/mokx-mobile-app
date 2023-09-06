@@ -27,6 +27,10 @@ body {
     background-color: #69235B;
 }
 
-body>iframe {
+.audio-recorder-options .audio-recorder-visualizer .audio-recorder-timer .audio-recorder-mic {
+    display: none;
+}
+
+/* body>iframe {
     display: none;
 }

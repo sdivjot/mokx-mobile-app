@@ -20,14 +20,14 @@ const PhoneSignUp = () => {
   const getOtp = async (e) => {
     e.preventDefault();
 
-    console.log(number);
+    // console.log(number);
     setError("");
     if (number === "" || number === undefined)
       return setError("Please enter a valid phone number!");
     try {
-      console.log("i am here", number)
+      // console.log("i am here", number)
       const response = await setUpRecaptcha(number);
-      console.log("success");
+      // console.log("success");
       setCap(false);
       setResult(response);
       setFlag(true);
@@ -60,24 +60,24 @@ const PhoneSignUp = () => {
           <div className='w-full flex flex-row justify-center items-center'>
             <div className='text-center text-xl bg-[#CBCBFF] w-48 h-8 rounded-md text-[#69235B] font-semibold'>Arya, AI Acharya</div>
           </div>
-          {!flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 md:text-center">Start Your Vedic Quest</div>}
+          {!flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 md:text-center ">Start Your Vedic Quest</div>}
           {flag && <div className="font-link font-semibold text-2xl text-[#FFFFFF] pt-[20px] w-9/12 md:text-center">OTP Verification</div>}
         </div>
 
         
 
-        {!flag && < form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center" onSubmit={getOtp}>
+        {!flag && < form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center md:w-[25vw]" onSubmit={getOtp}>
           <label className="w-9/12"><div className="text-white ">Enter mobile no.*</div><PhoneInput 
-          placeholder="Enter phone number" 
+          placeholder="12345 67890" 
           value={number} 
           onChange={setNumber} 
           defaultCountry="IN" 
           /></label>
-          <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Send OTP</button>
+          <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 py-2.5 dark:focus:ring-yellow-900">Send OTP</button>
         </form>}
 
-        {flag && <form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center" onSubmit={verifyOtp}>
-        <div className="w-9/12 md:flex md:flex-col md:items-center">
+        {flag && <form className="w-full flex flex-col justify-between h-full mt-6 mb-6 items-center md:items-center md:w-[25vw] " onSubmit={verifyOtp}>
+        <div className="w-9/12">
         <div className="text-white pb-4">Enter the code sent to <span className="text-yellow-400">{number}</span>.*</div>
         <OtpInput  
           value={otp} 
@@ -101,7 +101,7 @@ const PhoneSignUp = () => {
         <div className="text-white pt-4">I did not recieve any code. <span onClick={getOtp} className="text-yellow-400 cursor-pointer">RESEND</span></div>
         </div>
           <Timer initMinute={2} initSeconds={0}/>
-          <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">Submit</button>
+          <button type="sumbit" class="focus:outline-none text-[#69235B] bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-lg w-9/12 py-2.5 dark:focus:ring-yellow-900">Submit</button>
         </form>}
         {cap && <div className=" mb-5" id='recaptcha-container'></div>}
       </div>
