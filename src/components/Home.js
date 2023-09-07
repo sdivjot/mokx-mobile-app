@@ -221,7 +221,7 @@ const Home = () => {
         </div>
 
       </div>}
-      <div className='mt-[80px] flex flex-col items-center w-full font-link bg-[#EEEEFF] min-h-screen'>
+      <div className='mt-[80px] flex flex-col items-center w-full  font-link bg-[#EEEEFF] min-h-screen'>
 
 
 
