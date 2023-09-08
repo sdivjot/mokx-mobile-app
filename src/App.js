@@ -5,30 +5,35 @@ import Home from "./components/Home";
 import PhoneSignUp from "./components/PhoneSignUp";
 import LoadUp from "./components/LoadUp";
 import { useState, useEffect } from "react";
-import { Select, MenuItem } from "@mui/material";
-import namaste from "./images/yogagirl.png"
+//import {useUserAuth} from "./context/UserAuthContext";
+
 
 function App() {
   const [load, setLoad] = useState(true);
   useEffect(() => {
     setTimeout(() => { setLoad(false); }, 2000);
   }, []);
-  
+
   return (
     <>
       {!load && <UserAuthContextProvider>
-      <Routes>
-        <Route path="/" element={<PhoneSignUp />} />
-        <Route
-          path="/home"
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </UserAuthContextProvider>}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <PhoneSignUp />
+            }
+          />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </UserAuthContextProvider>}
       {load && <LoadUp />}
     </>
   );
