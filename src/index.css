@@ -27,10 +27,42 @@ body {
     background-color: #69235B;
 }
 
-.audio-recorder-options .audio-recorder-visualizer .audio-recorder-timer .audio-recorder-mic {
-    display: none;
+* {
+    -webkit-tap-highlight-color: transparent;
+    
 }
 
- body>iframe {
+audio::-webkit-media-controls-panel {
+    background-color: #69235B;
+}
+audio::-webkit-media-controls-current-time-display{
+    color: #fff;
+}
+audio::-webkit-media-controls-time-remaining-display {
+    color: #fff;
+    text-decoration: none;
+}
+audio::-webkit-media-controls-mute-button {
+    background-color: #FFC746;
+    border-radius: 50%;
+}
+audio::-webkit-media-controls-volume-slider {
+    background-color: #FFC746;
+}
+audio::-webkit-media-controls-play-button {
+    background-color: #FFC746;
+    border-radius: 50%;
+}
+audio::-webkit-media-controls-timeline {
+    background-color: #FFC746;
+    border-radius: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+audio {
+    width: 230px;
+}
+
+body>iframe {
     display: none;
 }

@@ -13,6 +13,7 @@ import { useUserAuth } from '../context/UserAuthContext'
 import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 import MicRoundedIcon from '@mui/icons-material/MicRounded';
 import roundloader from '../images/loader.svg';
+import MicRecorder from 'mic-recorder-to-mp3';
 
 
 const Home = () => {
@@ -26,12 +27,11 @@ const Home = () => {
   const { user } = useUserAuth();
   const starttext = "🙏 Namaste!  I'm Arya, your AI Vedic Acharya.  I'll help you with insights from Vedas for daily life concerns. Get guidance on mantras, general life advice, or specific Vedic interpretations. You can text or ask queries in your voice. 📝🎤";
   const hindistart = "🙏 नमस्ते! मैं आर्या हूँ, आपका वेदी एआई आचार्य। मैं आपको वेदों के गहरे ज्ञान से जीवन के प्रश्नों के उत्तर देने में मदद करूँगा। मंत्रों के गहरे अर्थ, जीवन के लिए सलाह या वैदिक व्याख्याओं के लिए मार्गदर्शन प्राप्त करें। आप टेक्स्ट या आपकी आवाज़ में प्रश्न पूछ सकते हैं। 📝🎤";
-  const Roles = ['Arya Is Understanding Your Question', 'Searching Through The Vedas', 'Fetching Your Answer'];
-  const hRoles = ['आर्या आपका प्रश्न समझ रही हैं', 'आपका प्रश्न वेदों के माध्यम से खोजा जा रहा है', 'आपका उत्तर लाया जा रहा है'];
   const [query, setQuery] = useState([]);
   const [chats, setChats] = useState([]);
-  const [audioblob, setAudio] = useState({});
   const [got, setGot] = useState(false);
+  const [url, setURL] = useState("");
+  const [listening, setListening] = useState(false);
 
 
   function addQuery(newNote) {
@@ -71,20 +71,21 @@ const Home = () => {
       query: q,
       reply: '',
       time: time
-    })
+    });
     const backendurl = process.env.REACT_APP_BACKEND + "/addquery";
     const result = await apicall.result({ 'text': q })
     if (result) {
+      console.log(result.data);
       setQuery(query.filter(item => item.reply !== ''));
       addQuery({
         query: q,
-        reply: result.data.response,
+        reply: result.data,
         time: time
       });
       axios.post(backendurl, {
         phno: user.phoneNumber,
         query: q,
-        reply: result.data.response,
+        reply: result.data,
         time: t
       });
       setDis(false);
@@ -107,69 +108,39 @@ const Home = () => {
 
 
 
-
-
-
-
-  const recorderControls = useAudioRecorder(
-    {
-      noiseSuppression: true,
-      echoCancellation: true,
-    },
-    (err) => console.table(err) // onNotAllowedOrFound
-  );
-  const addAudioElement = async (blob) => {
-    const url = URL.createObjectURL(blob);
-    const audio = document.createElement('audio');
-    console.log(blob);
-    console.log(url);
-    audio.src = url;
-    audio.controls = true;
-    document.body.appendChild(audio);
-    const audioreply = await aud({ 'file': blob });
-    axios.post("https://mokxweb.duckdns.org:5000/upload_audio", {
-      headers: {
-        'Content-Type': 'application/octet-stream',
-
-      }
-    })
-    if (audioreply) {
-      console.log(audioreply);
-      const repl = document.createElement('audio');
-      console.log(repl);
-      const re = URL.createObjectURL(audioreply);
-      audio.src = re;
-      audio.controls = true;
-      document.body.appendChild(audio);
-    }
-
-  };
-  const [audioBlob, setAudioBlob] = useState(null);
-
-  const handleAudioChange = event => {
-    const file = event.target.files[0];
-    setAudioBlob(file);
-  };
-
-  const handleUpload = () => {
-    if (!audioBlob) {
-      console.error('No audio file selected.');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('audio', audioBlob, 'audioFileName.wav');
-
-    axios.post('https://mokxweb.duckdns.org:5000/upload_audio', formData)
-      .then(response => {
-        console.log('Upload successful:', response.data);
-      })
-      .catch(error => {
-        console.error('Upload error:', error);
+  const recorder = new MicRecorder({
+    bitRate: 128
+  });
+  const stopRecording = async () => {
+    setListening(false);
+    recorder.stop();
+    recorder.getMp3().then(async ([buffer, blob]) => {
+      const file = new File(buffer, 'voicequery.mp3', {
+        type: blob.type,
+        lastModified: Date.now()
       });
-  };
-
-
+      const current = new Date();
+      const time = current.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+      const queryurl = URL.createObjectURL(file);
+      setURL(URL.createObjectURL(file));
+      addQuery({
+        type: "audio",
+        queryurl: queryurl,
+        replyurl: queryurl,
+        time: time
+      });
+      const formData = new FormData();
+      formData.append('audio', file);
+      const result = await aud.result({ formData });
+      console.log(result.data);
+    }).catch((e) => {
+      alert('We could not retrieve your message');
+      console.log(e);
+    });
+  }
 
 
 
@@ -193,7 +164,7 @@ const Home = () => {
 
   return (
     <div className="App">
-      <div className="bg-white w-full fixed top-0">
+      <div className="bg-white w-full fixed top-0 z-20">
         <div className=' w-full flex flex-row items-center justify-between p-4'>
           <div className="flex flex-row items-center">
             {/* <div onClick={goBack} className="mr-4"><ArrowBackIcon></ArrowBackIcon></div> */}
@@ -255,7 +226,7 @@ const Home = () => {
             </div>
           </div>
 
-          {prev && <> <div className="font-link font-semibold text-gray-400 text-sm">
+          {prev && <> <div className="font-link font-semibold text-gray-400 text-sm mb-2">
             ------- Previous chats -------
 
             {!got && <div className="w-full flex flex-row justify-center mb-2 animate-spin"><img src={roundloader} className="h-8" /></div>}
@@ -280,9 +251,12 @@ const Home = () => {
               })}
               <div ref={prevchat} className="relative z-100 bottom-[85vh]"></div>
             </div></>}
+
+
+          {/* new chats */}
           <div className='w-full flex flex-col'>
 
-            <div className="font-link font-semibold text-gray-400 text-sm w-full text-center">------- New chat -------</div>
+            <div className="font-link font-semibold text-gray-400 text-sm w-full text-center mb-2">------- New chat -------</div>
             {query.map((item, index) => {
               if (index !== query.length - 1) {
                 return <div className="flex flex-col">
@@ -292,6 +266,8 @@ const Home = () => {
                     content={item.query}
                     time={item.time}
                     lang={lang}
+                    // type={item.type}
+                    // url={item.url}
                   />
                   <Reply
                     key={index}
@@ -299,6 +275,8 @@ const Home = () => {
                     content={item.reply}
                     time={item.time}
                     lang={lang}
+                    // type={item.type}
+                    // url={item.url}
                   />
                 </div>
               }
@@ -312,6 +290,8 @@ const Home = () => {
                       content={item.query}
                       time={item.time}
                       lang={lang}
+                      type={item.type}
+                      url={item.queryurl}
                     />
                     <Reply
                       key={index}
@@ -319,22 +299,36 @@ const Home = () => {
                       content={item.reply}
                       time={item.time}
                       lang={lang}
+                      type={item.type}
+                      url={item.replyurl}
                     />
                   </div></>
               }
             })}
+
+
+            {/* <audio controls src={url}  />
+            <audio controls src={url1} /> */}
+
+
             <div className="h-24" />
           </div>
-          {/* <div>
-            <input type="file" accept="audio/*" onChange={handleAudioChange} />
-            <button onClick={handleUpload}>Upload Audio</button>
-          </div> */}
           <div className='z-10 rounded-3xl bg-[#FFFFFF] drop-shadow-xl flex flex-row justify-between items-center w-11/12 p-[5px] px-[15px] md:p-[10px] md:px-[20px] m-3 fixed bottom-3'>
             <form onSubmit={handleEnter} className="w-full flex flex-row justify-between items-center">
               <label className="w-full m-1">
                 <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-md md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
               </label>
-              {!dis && <>{post ? <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} ><SendRoundedIcon /></button> : <MicRoundedIcon />}</>}
+              {!dis && <>{post && <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} >
+                <SendRoundedIcon />
+              </button> 
+              
+              // :
+                // </div>
+                // <>
+                //   {!false && <div onClick={()=>{recorder.start()}}><MicRoundedIcon /></div>}
+                //   {true && <div className="animate-pulse" onClick={stopRecording}><MicRoundedIcon /></div>}
+                // </>
+              }{!post && <div><MicRoundedIcon /></div>}</>}
               {dis && <img className="w-6" src={loader} />}
             </form>
           </div>

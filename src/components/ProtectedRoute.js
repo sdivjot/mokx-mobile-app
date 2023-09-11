@@ -1,11 +1,10 @@
 import React from "react";
 import { Navigate } from "react-router-dom";
 import { useUserAuth } from "../context/UserAuthContext";
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({children}) => {
   const { user } = useUserAuth();
   if (!user) {
-    alert("Access denied")
-    return <Navigate to="/" />;
+    return <Navigate to="/block" />;
   }
   return children;
 };

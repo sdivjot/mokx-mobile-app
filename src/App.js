@@ -5,7 +5,7 @@ import Home from "./components/Home";
 import PhoneSignUp from "./components/PhoneSignUp";
 import LoadUp from "./components/LoadUp";
 import { useState, useEffect } from "react";
-//import {useUserAuth} from "./context/UserAuthContext";
+import Blocker from "./components/Blocker";
 
 
 function App() {
@@ -13,7 +13,6 @@ function App() {
   useEffect(() => {
     setTimeout(() => { setLoad(false); }, 2000);
   }, []);
-
   return (
     <>
       {!load && <UserAuthContextProvider>
@@ -21,7 +20,7 @@ function App() {
           <Route
             path="/"
             element={
-              <PhoneSignUp />
+                <PhoneSignUp />
             }
           />
           <Route
@@ -30,6 +29,12 @@ function App() {
               <ProtectedRoute>
                 <Home />
               </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/block"
+            element={
+                <Blocker />
             }
           />
         </Routes>

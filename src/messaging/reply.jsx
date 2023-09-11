@@ -1,6 +1,4 @@
 import yogagirl from '../images/arya dp.jpg'
-import Skeleton from 'react-loading-skeleton'
-import 'react-loading-skeleton/dist/skeleton.css'
 import Typed from 'react-typed'
 import { useState, useEffect } from 'react'
 
@@ -9,10 +7,19 @@ function Reply(props) {
     const hRoles = ['आर्या आपका प्रश्न समझ रही हैं', 'आपका प्रश्न वेदों के माध्यम से खोजा जा रहा है', 'आपका उत्तर लाया जा रहा है'];
 
     const [load, setLoad] = useState(true);
-  useEffect(() => {
-    setTimeout(() => { setLoad(false); }, 60000);
-  }, []);
+    useEffect(() => {
+        setTimeout(() => { setLoad(false); }, 60000);
+    }, []);
 
+    // if (props.type === "audio") {
+    //     return <div className="flex flex-row justify-start w-10/12 pl-[10px] mb-4">
+    //         <div><img className='rounded-full' src={yogagirl} alt="xyz" /></div>
+    //         <div className='flex flex-col items-start w-full pl-[10px]'>
+    //             <audio autoPlay controls src={props.url} controlsList="nodownload noplaybackrate"/>
+    //             {props.time && <div className="text-slate-400 p-[5px] text-xs">{props.time}</div>}
+    //         </div>
+    //     </div>
+    // }
     return <div className="flex flex-row justify-start w-10/12 pl-[10px] mb-4">
         <div><img className='rounded-full' src={yogagirl} alt="xyz" /></div>
         <div className='flex flex-col items-start w-full pl-[10px]'>
@@ -25,12 +32,12 @@ function Reply(props) {
                 className="self-typed"
                 cursorChar="|"
             /> : <Typed
-            strings={props.lang === "English" ? ["This is taking longer than expected, please wait"] : hRoles}
-            typeSpeed={60}
-            showCursor
-            className="self-typed"
-            cursorChar="|"
-        />)}</div>
+                strings={props.lang === "English" ? ["This is taking longer than expected, please wait"] : hRoles}
+                typeSpeed={60}
+                showCursor
+                className="self-typed"
+                cursorChar="|"
+            />)}</div>
             {props.time && <div className="text-slate-400 p-[5px] text-xs">{props.time}</div>}
         </div>
     </div>

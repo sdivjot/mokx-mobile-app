@@ -15,7 +15,12 @@ const PhoneSignUp = () => {
   const [result, setResult] = useState("");
   const [cap,setCap] = useState(true);
   const { setUpRecaptcha } = useUserAuth();
+  const {user} = useUserAuth();
   const navigate = useNavigate();
+
+  if(user){
+    navigate("/home");
+  }
 
   const getOtp = async (e) => {
     e.preventDefault();
