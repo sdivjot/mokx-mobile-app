@@ -25,11 +25,14 @@ const PhoneSignUp = () => {
   const getOtp = async (e) => {
     e.preventDefault();
 
+    // console.log(number);
     setError("");
     if (number === "" || number === undefined)
       return setError("Please enter a valid phone number!");
     try {
+      // console.log("i am here", number)
       const response = await setUpRecaptcha(number);
+      // console.log("success");
       setCap(false);
       setResult(response);
       setFlag(true);
