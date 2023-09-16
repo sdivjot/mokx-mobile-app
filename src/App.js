@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "./components/ProtectedRoute"
 import Home from "./components/Home";
 import PhoneSignUp from "./components/PhoneSignUp";
+import Trial from "./components/Trial";
 import LoadUp from "./components/LoadUp";
 import { useState, useEffect } from "react";
 import Blocker from "./components/Blocker";
@@ -19,6 +20,12 @@ function App() {
         <Routes>
           <Route
             path="/"
+            element={
+                <Trial />
+            }
+          />
+          <Route
+            path="/login"
             element={
                 <PhoneSignUp />
             }

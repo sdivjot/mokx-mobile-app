@@ -9,16 +9,13 @@ import axios from "axios";
 import x from "./sampleprompts";
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import loader from '../images/loader.gif'
-import { useUserAuth } from '../context/UserAuthContext'
 import MicRoundedIcon from '@mui/icons-material/MicRounded';
 import roundloader from '../images/loader.svg';
 import MicRecorder from 'mic-recorder-to-mp3';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import { useNavigate } from "react-router-dom";
 
 
-const delay = ms => new Promise(
-  resolve => setTimeout(resolve, ms)
-);
 
 const Home = () => {
   const [lang, setLang] = useState("English");
@@ -28,7 +25,6 @@ const Home = () => {
   const [dis, setDis] = useState(false);
   const bottomRef = useRef(null);
   const prevchat = useRef(null);
-  const { user } = useUserAuth();
   const starttext = "🙏 Namaste!  I'm Arya, your AI Vedic Acharya.  I'll help you with insights from Vedas for daily life concerns. Get guidance on mantras, general life advice, or specific Vedic interpretations. You can text or ask queries in your voice. 📝🎤";
   const hindistart = "🙏 नमस्ते! मैं आर्या हूँ, आपका वेदी एआई आचार्य। मैं आपको वेदों के गहरे ज्ञान से जीवन के प्रश्नों के उत्तर देने में मदद करूँगा। मंत्रों के गहरे अर्थ, जीवन के लिए सलाह या वैदिक व्याख्याओं के लिए मार्गदर्शन प्राप्त करें। आप टेक्स्ट या आपकी आवाज़ में प्रश्न पूछ सकते हैं। 📝🎤";
   const [query, setQuery] = useState([]);
@@ -38,6 +34,7 @@ const Home = () => {
   const [listening, setListening] = useState(false);
   const [data, setData] = useState("");
   const [aud, setAud] = useState(false);
+  const [used, setUsed] = useState(false);
 
 
   function addQuery(newNote) {
@@ -47,7 +44,7 @@ const Home = () => {
   };
 
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   function goBack() {
     // navigate(-1);
   }
@@ -78,7 +75,6 @@ const Home = () => {
       reply: '',
       time: time
     });
-    const backendurl = process.env.REACT_APP_BACKEND + "/addquery";
     const result = await apicall.result({ 'text': q })
     if (result) {
       setQuery(query.filter(item => item.reply !== ''));
@@ -86,12 +82,6 @@ const Home = () => {
         query: q,
         reply: result.data,
         time: time
-      });
-      axios.post(backendurl, {
-        phno: user.phoneNumber,
-        query: q,
-        reply: result.data,
-        time: t
       });
       setDis(false);
     }
@@ -102,12 +92,6 @@ const Home = () => {
 
   const handleEnter = (e) => {
     e.preventDefault();
-  }
-
-  const getChats = async () => {
-    setPrev(true);
-    const chaturl = process.env.REACT_APP_BACKEND + "/getchats/" + user.phoneNumber;
-    await axios.get(chaturl).then((res) => { setChats(res.data); setPrev(true); setGot(true); })
   }
 
 
@@ -180,7 +164,15 @@ const Home = () => {
   }, [query]);
   useEffect(() => {
     prevchat.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chats])
+  }, [chats]);
+  useEffect(() => {
+    if(localStorage.getItem("count")>3){
+      navigate("/login");
+    }
+    else {
+      localStorage.setItem("count", query.length);
+    }
+  }, [query]);
 
 
 
@@ -200,7 +192,6 @@ const Home = () => {
               <div className="text-[#69235B] font-semibold text-lg md:text-2xl ml-2">{lang === "English" ? "Arya" : "आर्या"}<div className="text-sm md:text-base font-light text-slate-400">{lang === "English" ? "Vedic Acharya" : "वैदिक आचार्य"}</div></div>
             </div>
           </div>
-          {!prev && sel && <button onClick={getChats} className="text-sm font-medium font-link bg-[#FFC746] p-2 rounded-xl mb-1 md:text-base cursor-pointer">{lang === "English" ? "Show previous chats" : "पिछली चैट दिखाएं"}</button>}
           {/* <div onClick={() => { if(lang==="English"){setLang("हिंदी")} else{setLang("English")}}} className="langchange cursor-pointer"><img src={Hindi} /></div> */}
         </div>
       </div>
@@ -253,37 +244,8 @@ const Home = () => {
             </div>
           </div>
 
-          {prev && <> <div className="font-link font-semibold text-gray-400 text-sm mb-2">
-            ------- Previous chats -------
-
-            {!got && <div className="w-full flex flex-row justify-center mb-2 animate-spin"><img src={roundloader} className="h-8" /></div>}
-          </div>
-
-            <div className='w-full flex flex-col'>
-
-              {chats.map((item, index) => { //displaying previous chats
-                return <div className="flex flex-col"> <Query
-                  key={index}
-                  id={index}
-                  content={item.query}
-                  lang={lang}
-                />
-                  <Reply
-                    key={index}
-                    id={index}
-                    content={item.reply}
-                    lang={lang}
-                  />
-                </div>
-              })}
-              <div ref={prevchat} className="relative z-100 bottom-[85vh]"></div>
-            </div></>}
-
-
           {/* new chats */}
           <div className='w-full flex flex-col'>
-
-            <div className="font-link font-semibold text-gray-400 text-sm w-full text-center mb-2">------- New chat -------</div>
             {query.map((item, index) => {
               if (index !== query.length - 1) {
                 return <div className="flex flex-col">
