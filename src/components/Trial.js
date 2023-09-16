@@ -14,6 +14,7 @@ import roundloader from '../images/loader.svg';
 import MicRecorder from 'mic-recorder-to-mp3';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 import { useNavigate } from "react-router-dom";
+import { useUserAuth } from "../context/UserAuthContext";
 
 
 
@@ -35,6 +36,10 @@ const Home = () => {
   const [data, setData] = useState("");
   const [aud, setAud] = useState(false);
   const [used, setUsed] = useState(false);
+
+  if(user){
+    navigate("/home");
+  }
 
 
   function addQuery(newNote) {
@@ -134,8 +139,6 @@ const Home = () => {
       if (response.ok) {
         const blob = await response.blob();
         const audioUrl = URL.createObjectURL(blob);
-        console.log(response);
-        console.log(audioUrl);
         setQuery(query.filter(item => item.replyurl !== ''));
         addQuery({
           type: "audio",
