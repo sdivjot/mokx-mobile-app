@@ -36,7 +36,9 @@ const Home = () => {
   const [data, setData] = useState("");
   const [aud, setAud] = useState(false);
   const [used, setUsed] = useState(false);
-
+  const {user} = useUserAuth();
+  const navigate = useNavigate();
+  
   if(user){
     navigate("/home");
   }
@@ -49,7 +51,7 @@ const Home = () => {
   };
 
 
-  const navigate = useNavigate();
+  
   function goBack() {
     // navigate(-1);
   }
