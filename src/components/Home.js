@@ -159,6 +159,15 @@ const Home = () => {
           replyurl: audioUrl,
           time: time
         });
+        const current = new Date();
+        const t = current.toLocaleString();
+        const backendurl = process.env.REACT_APP_BACKEND + "/addquery";
+        axios.post(backendurl, {
+          phno: user.phoneNumber,
+          queryurl: "sound",
+          replyurl: response,
+          time: t
+        });
         setDis(false);
       } else {
         console.log("error");
