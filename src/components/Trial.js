@@ -171,7 +171,7 @@ const Home = () => {
     prevchat.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chats]);
   useEffect(() => {
-    if(localStorage.getItem("count")>3){
+    if(localStorage.getItem("count")>7){
       navigate("/login");
     }
     else {
