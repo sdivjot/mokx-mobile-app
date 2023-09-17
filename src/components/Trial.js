@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Query from "../messaging/query";
 import Reply from "../messaging/reply";
-import { apicall, aud } from "../apicalls";
+import { apicall } from "../apicalls";
 import yogagirl from '../images/arya dp.jpg'
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import HelpIcon from '@mui/icons-material/Help';
@@ -9,11 +9,13 @@ import axios from "axios";
 import x from "./sampleprompts";
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import loader from '../images/loader.gif'
-import { useUserAuth } from '../context/UserAuthContext'
-import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 import MicRoundedIcon from '@mui/icons-material/MicRounded';
 import roundloader from '../images/loader.svg';
 import MicRecorder from 'mic-recorder-to-mp3';
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
+import { useNavigate } from "react-router-dom";
+import { useUserAuth } from "../context/UserAuthContext";
+
 
 
 const Home = () => {
@@ -24,7 +26,6 @@ const Home = () => {
   const [dis, setDis] = useState(false);
   const bottomRef = useRef(null);
   const prevchat = useRef(null);
-  const { user } = useUserAuth();
   const starttext = "🙏 Namaste!  I'm Arya, your AI Vedic Acharya.  I'll help you with insights from Vedas for daily life concerns. Get guidance on mantras, general life advice, or specific Vedic interpretations. You can text or ask queries in your voice. 📝🎤";
   const hindistart = "🙏 नमस्ते! मैं आर्या हूँ, आपका वेदी एआई आचार्य। मैं आपको वेदों के गहरे ज्ञान से जीवन के प्रश्नों के उत्तर देने में मदद करूँगा। मंत्रों के गहरे अर्थ, जीवन के लिए सलाह या वैदिक व्याख्याओं के लिए मार्गदर्शन प्राप्त करें। आप टेक्स्ट या आपकी आवाज़ में प्रश्न पूछ सकते हैं। 📝🎤";
   const [query, setQuery] = useState([]);
@@ -32,6 +33,15 @@ const Home = () => {
   const [got, setGot] = useState(false);
   const [url, setURL] = useState("");
   const [listening, setListening] = useState(false);
+  const [data, setData] = useState("");
+  const [aud, setAud] = useState(false);
+  const [used, setUsed] = useState(false);
+  const {user} = useUserAuth();
+  const navigate = useNavigate();
+  
+  if(user){
+    navigate("/home");
+  }
 
 
   function addQuery(newNote) {
@@ -41,7 +51,7 @@ const Home = () => {
   };
 
 
-  // const navigate = useNavigate();
+  
   function goBack() {
     // navigate(-1);
   }
@@ -72,21 +82,13 @@ const Home = () => {
       reply: '',
       time: time
     });
-    const backendurl = process.env.REACT_APP_BACKEND + "/addquery";
     const result = await apicall.result({ 'text': q })
     if (result) {
-      console.log(result.data);
       setQuery(query.filter(item => item.reply !== ''));
       addQuery({
         query: q,
         reply: result.data,
         time: time
-      });
-      axios.post(backendurl, {
-        phno: user.phoneNumber,
-        query: q,
-        reply: result.data,
-        time: t
       });
       setDis(false);
     }
@@ -99,20 +101,18 @@ const Home = () => {
     e.preventDefault();
   }
 
-  const getChats = async () => {
-    setPrev(true);
-    const chaturl = process.env.REACT_APP_BACKEND + "/getchats/" + user.phoneNumber;
-    await axios.get(chaturl).then((res) => { setChats(res.data); setPrev(true); setGot(true); })
-  }
-
 
 
 
   const recorder = new MicRecorder({
     bitRate: 128
   });
+  const startRecording = async () => {
+    await recorder.start();
+  }
   const stopRecording = async () => {
     setListening(false);
+    setDis(true); //disabling send button
     recorder.stop();
     recorder.getMp3().then(async ([buffer, blob]) => {
       const file = new File(buffer, 'voicequery.mp3', {
@@ -126,10 +126,12 @@ const Home = () => {
       });
       const queryurl = URL.createObjectURL(file);
       setURL(URL.createObjectURL(file));
+      const formData = new FormData();
+      formData.append('audio_file', file);
       addQuery({
         type: "audio",
         queryurl: queryurl,
-        replyurl: queryurl,
+        replyurl: '',
         time: time
       });
       const response = await fetch(process.env.REACT_APP_API_URL + "/upload_audio", {
@@ -139,8 +141,6 @@ const Home = () => {
       if (response.ok) {
         const blob = await response.blob();
         const audioUrl = URL.createObjectURL(blob);
-        console.log(response);
-        console.log(audioUrl);
         setQuery(query.filter(item => item.replyurl !== ''));
         addQuery({
           type: "audio",
@@ -148,34 +148,17 @@ const Home = () => {
           replyurl: audioUrl,
           time: time
         });
-        const current = new Date();
-        const t = current.toLocaleString();
-        const backendurl = process.env.REACT_APP_BACKEND + "/addquery";
-        axios.post(backendurl, {
-          phno: user.phoneNumber,
-          queryurl: "sound",
-          replyurl: response,
-          time: t
-        });
         setDis(false);
       } else {
         console.log("error");
         alert("We could not retrieve your message");
       }
-      const formData = new FormData();
-      formData.append('audio', file);
-      const result = await aud.result({ formData });
-      console.log(result.data);
     }).catch((e) => {
       alert('We could not retrieve your message');
       console.log(e);
     });
   }
 
-  const switchmic = async event => {
-    await delay(1000);
-    setListening(true);
-  };
 
 
 
@@ -186,7 +169,15 @@ const Home = () => {
   }, [query]);
   useEffect(() => {
     prevchat.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [chats])
+  }, [chats]);
+  useEffect(() => {
+    if(localStorage.getItem("count")>3){
+      navigate("/login");
+    }
+    else {
+      localStorage.setItem("count", query.length);
+    }
+  }, [query]);
 
 
 
@@ -206,7 +197,6 @@ const Home = () => {
               <div className="text-[#69235B] font-semibold text-lg md:text-2xl ml-2">{lang === "English" ? "Arya" : "आर्या"}<div className="text-sm md:text-base font-light text-slate-400">{lang === "English" ? "Vedic Acharya" : "वैदिक आचार्य"}</div></div>
             </div>
           </div>
-          {!prev && sel && <button onClick={getChats} className="text-sm font-medium font-link bg-[#FFC746] p-2 rounded-xl mb-1 md:text-base cursor-pointer">{lang === "English" ? "Show previous chats" : "पिछली चैट दिखाएं"}</button>}
           {/* <div onClick={() => { if(lang==="English"){setLang("हिंदी")} else{setLang("English")}}} className="langchange cursor-pointer"><img src={Hindi} /></div> */}
         </div>
       </div>
@@ -259,37 +249,8 @@ const Home = () => {
             </div>
           </div>
 
-          {prev && <> <div className="font-link font-semibold text-gray-400 text-sm mb-2">
-            ------- Previous chats -------
-
-            {!got && <div className="w-full flex flex-row justify-center mb-2 animate-spin"><img src={roundloader} className="h-8" /></div>}
-          </div>
-
-            <div className='w-full flex flex-col'>
-
-              {chats.map((item, index) => { //displaying previous chats
-                return <div className="flex flex-col"> <Query
-                  key={index}
-                  id={index}
-                  content={item.query}
-                  lang={lang}
-                />
-                  <Reply
-                    key={index}
-                    id={index}
-                    content={item.reply}
-                    lang={lang}
-                  />
-                </div>
-              })}
-              <div ref={prevchat} className="relative z-100 bottom-[85vh]"></div>
-            </div></>}
-
-
           {/* new chats */}
           <div className='w-full flex flex-col'>
-
-            <div className="font-link font-semibold text-gray-400 text-sm w-full text-center mb-2">------- New chat -------</div>
             {query.map((item, index) => {
               if (index !== query.length - 1) {
                 return <div className="flex flex-col">
@@ -299,8 +260,8 @@ const Home = () => {
                     content={item.query}
                     time={item.time}
                     lang={lang}
-                    // type={item.type}
-                    // url={item.url}
+                    type={item.type}
+                    url={item.url}
                   />
                   <Reply
                     key={index}
@@ -308,15 +269,15 @@ const Home = () => {
                     content={item.reply}
                     time={item.time}
                     lang={lang}
-                    // type={item.type}
-                    // url={item.url}
+                    type={item.type}
+                    url={"used"}
                   />
                 </div>
               }
               else {
-                return <><div ref={bottomRef} className="relative z-100 bottom-[85px]"></div>
+                return <>
+                  <div ref={bottomRef} className="relative z-100 bottom-[85px]"></div>
                   <div className="flex flex-col">
-
                     <Query
                       key={index}
                       id={index}
@@ -335,33 +296,30 @@ const Home = () => {
                       type={item.type}
                       url={item.replyurl}
                     />
-                  </div></>
+                  </div>
+                </>
               }
             })}
-
-
-            {/* <audio controls src={url}  />
-            <audio controls src={url1} /> */}
-
-
             <div className="h-24" />
           </div>
           <div className='z-10 rounded-3xl bg-[#FFFFFF] drop-shadow-xl flex flex-row justify-between items-center w-11/12 p-[5px] px-[15px] md:p-[10px] md:px-[20px] m-3 fixed bottom-3'>
             <form onSubmit={handleEnter} className="w-full flex flex-row justify-between items-center">
               <label className="w-full m-1">
-                <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-md md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
+                <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-md md:text-lg" type="text" placeholder={placeholder} value={post} disabled={aud} onChange={handleChange}></input></div>
               </label>
-              {!dis && <>{post && <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} >
+              {!dis && <>{post ? <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} >
                 <SendRoundedIcon />
-              </button> 
-              
-              // :
-                // </div>
-                // <>
-                //   {!false && <div onClick={()=>{recorder.start()}}><MicRoundedIcon /></div>}
-                //   {true && <div className="animate-pulse" onClick={stopRecording}><MicRoundedIcon /></div>}
-                // </>
-              }{!post && <div><MicRoundedIcon /></div>}</>}
+              </button>
+
+                :
+
+                <>
+                  <div onClick={startRecording}><MicRoundedIcon /></div>
+                  <div onClick={stopRecording}><SendOutlinedIcon /></div>
+                </>
+              }
+                {/* {!post && <div><MicRoundedIcon /></div>} */}
+              </>}
               {dis && <img className="w-6" src={loader} />}
             </form>
           </div>
