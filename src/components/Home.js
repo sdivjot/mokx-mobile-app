@@ -172,10 +172,6 @@ const Home = () => {
     });
   }
 
-  const switchmic = async event => {
-    await delay(1000);
-    setListening(true);
-  };
 
 
 
