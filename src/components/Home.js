@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Query from "../messaging/query";
 import Reply from "../messaging/reply";
-import { apicall, aud } from "../apicalls";
+import { apicall } from "../apicalls";
 import yogagirl from '../images/arya dp.jpg'
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt';
 import HelpIcon from '@mui/icons-material/Help';
@@ -10,11 +10,15 @@ import x from "./sampleprompts";
 import SendRoundedIcon from '@mui/icons-material/SendRounded';
 import loader from '../images/loader.gif'
 import { useUserAuth } from '../context/UserAuthContext'
-import { AudioRecorder, useAudioRecorder } from 'react-audio-voice-recorder';
 import MicRoundedIcon from '@mui/icons-material/MicRounded';
 import roundloader from '../images/loader.svg';
 import MicRecorder from 'mic-recorder-to-mp3';
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
+
+const delay = ms => new Promise(
+  resolve => setTimeout(resolve, ms)
+);
 
 const Home = () => {
   const [lang, setLang] = useState("English");
@@ -32,6 +36,8 @@ const Home = () => {
   const [got, setGot] = useState(false);
   const [url, setURL] = useState("");
   const [listening, setListening] = useState(false);
+  const [data, setData] = useState("");
+  const [aud, setAud] = useState(false);
 
 
   function addQuery(newNote) {
@@ -75,7 +81,6 @@ const Home = () => {
     const backendurl = process.env.REACT_APP_BACKEND + "/addquery";
     const result = await apicall.result({ 'text': q })
     if (result) {
-      console.log(result.data);
       setQuery(query.filter(item => item.reply !== ''));
       addQuery({
         query: q,
@@ -111,8 +116,12 @@ const Home = () => {
   const recorder = new MicRecorder({
     bitRate: 128
   });
+  const startRecording = async () => {
+    await recorder.start();
+  }
   const stopRecording = async () => {
     setListening(false);
+    setDis(true); //disabling send button
     recorder.stop();
     recorder.getMp3().then(async ([buffer, blob]) => {
       const file = new File(buffer, 'voicequery.mp3', {
@@ -126,10 +135,12 @@ const Home = () => {
       });
       const queryurl = URL.createObjectURL(file);
       setURL(URL.createObjectURL(file));
+      const formData = new FormData();
+      formData.append('audio_file', file);
       addQuery({
         type: "audio",
         queryurl: queryurl,
-        replyurl: queryurl,
+        replyurl: '',
         time: time
       });
       const response = await fetch(process.env.REACT_APP_API_URL + "/upload_audio", {
@@ -162,10 +173,6 @@ const Home = () => {
         console.log("error");
         alert("We could not retrieve your message");
       }
-      const formData = new FormData();
-      formData.append('audio', file);
-      const result = await aud.result({ formData });
-      console.log(result.data);
     }).catch((e) => {
       alert('We could not retrieve your message');
       console.log(e);
@@ -295,8 +302,8 @@ const Home = () => {
                     content={item.query}
                     time={item.time}
                     lang={lang}
-                    // type={item.type}
-                    // url={item.url}
+                    type={item.type}
+                    url={item.url}
                   />
                   <Reply
                     key={index}
@@ -304,15 +311,15 @@ const Home = () => {
                     content={item.reply}
                     time={item.time}
                     lang={lang}
-                    // type={item.type}
-                    // url={item.url}
+                    type={item.type}
+                    url={"used"}
                   />
                 </div>
               }
               else {
-                return <><div ref={bottomRef} className="relative z-100 bottom-[85px]"></div>
+                return <>
+                  <div ref={bottomRef} className="relative z-100 bottom-[85px]"></div>
                   <div className="flex flex-col">
-
                     <Query
                       key={index}
                       id={index}
@@ -331,33 +338,30 @@ const Home = () => {
                       type={item.type}
                       url={item.replyurl}
                     />
-                  </div></>
+                  </div>
+                </>
               }
             })}
-
-
-            {/* <audio controls src={url}  />
-            <audio controls src={url1} /> */}
-
-
             <div className="h-24" />
           </div>
           <div className='z-10 rounded-3xl bg-[#FFFFFF] drop-shadow-xl flex flex-row justify-between items-center w-11/12 p-[5px] px-[15px] md:p-[10px] md:px-[20px] m-3 fixed bottom-3'>
             <form onSubmit={handleEnter} className="w-full flex flex-row justify-between items-center">
               <label className="w-full m-1">
-                <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-md md:text-lg" type="text" placeholder={placeholder} value={post} onChange={handleChange}></input></div>
+                <div className="w-full"><input className="w-full border-b-2 focus:outline-none text-md md:text-lg" type="text" placeholder={placeholder} value={post} disabled={aud} onChange={handleChange}></input></div>
               </label>
-              {!dis && <>{post && <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} >
+              {!dis && <>{post ? <button onClick={handleSubmit} type="submit" style={{ margin: "0.25rem" }} >
                 <SendRoundedIcon />
-              </button> 
-              
-              // :
-                // </div>
-                // <>
-                //   {!false && <div onClick={()=>{recorder.start()}}><MicRoundedIcon /></div>}
-                //   {true && <div className="animate-pulse" onClick={stopRecording}><MicRoundedIcon /></div>}
-                // </>
-              }{!post && <div><MicRoundedIcon /></div>}</>}
+              </button>
+
+                :
+
+                <>
+                  <div onClick={startRecording}><MicRoundedIcon /></div>
+                  <div onClick={stopRecording}><SendOutlinedIcon /></div>
+                </>
+              }
+                {/* {!post && <div><MicRoundedIcon /></div>} */}
+              </>}
               {dis && <img className="w-6" src={loader} />}
             </form>
           </div>
