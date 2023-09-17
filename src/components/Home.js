@@ -150,8 +150,6 @@ const Home = () => {
       if (response.ok) {
         const blob = await response.blob();
         const audioUrl = URL.createObjectURL(blob);
-        console.log(response);
-        console.log(audioUrl);
         setQuery(query.filter(item => item.replyurl !== ''));
         addQuery({
           type: "audio",
@@ -356,8 +354,8 @@ const Home = () => {
                 :
 
                 <>
-                  <div onClick={startRecording}><MicRoundedIcon /></div>
-                  <div onClick={stopRecording}><SendOutlinedIcon /></div>
+                  <div className="cursor-pointer" onClick={startRecording}><MicRoundedIcon /></div>
+                  <div className="cursor-pointer" onClick={stopRecording}><SendOutlinedIcon /></div>
                 </>
               }
                 {/* {!post && <div><MicRoundedIcon /></div>} */}
