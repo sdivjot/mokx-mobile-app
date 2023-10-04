@@ -3,8 +3,8 @@ import Typed from 'react-typed'
 import { useState, useEffect } from 'react'
 
 function Reply(props) {
-    const Roles = ['Arya Is Understanding Your Question', 'Searching Through The Vedas', 'Fetching Your Answer'];
-    const hRoles = ['आर्या आपका प्रश्न समझ रही हैं', 'आपका प्रश्न वेदों के माध्यम से खोजा जा रहा है', 'आपका उत्तर लाया जा रहा है'];
+    const Roles = ["Thanks for your response 🙂", "I'm trying to understand your concern...", "Reading the pages of the Vedas for your response 📔"];
+    const hRoles = ["आपकी प्रतिक्रिया के लिए धन्यवाद 🙂", "मैं आपके प्रश्न को समझने का प्रयास कर रही हूं...", "आपकी प्रतिक्रिया के लिए वेदों के पन्ने पढ़े जा रहे हैं 📔"];
 
     if (props.type === "audio") {
         if (props.url) {
